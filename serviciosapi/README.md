@@ -151,3 +151,31 @@ flutter build apk
 ```
 
 Si totes les comandes passen, el teu flux de plantilla neta és correcte.
+
+
+```bash
+  final String _serverUrl = "https://car-data.p.rapidapi.com";
+  final String _headerKey = "49d8315746msha3bd66e67a096bbp15fc81jsnd5c084af686d";
+  final String _headerHost = "car-data.p.rapidapi.com";
+
+  List<CarsModel> carsModelFromJson(String str) => List<CarsModel>.from(
+    json.decode(str).map((x) => CarsModel.fromMaptoCarObject(x)));
+
+  String carsModelToJson(List<CarsModel> data) =>  
+    json.encode(List<dynamic>.from(data.map((x) => x.fromObjectToMap())));
+ 
+  Future<List<CarsModel>> getCars() async{
+    var uri = Uri.parse("$_serverUrl/cars");
+
+    var response = await http.get(uri, headers: {
+      "x-rapidapi-key": _headerKey,
+      "x-rapidapi-host": _headerHost
+    });
+    
+    if (response.statusCode == 200) {
+      return carsModelFromJson(response.body);
+    } else {
+      throw ("Error al obtener la lista de coches: ${response.statusCode}");
+    }
+  }
+```
