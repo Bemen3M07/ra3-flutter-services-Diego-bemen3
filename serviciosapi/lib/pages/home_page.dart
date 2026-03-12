@@ -14,8 +14,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
- @override
+  var carHttpService = CarHttpService();
+
+  @override
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -27,14 +28,88 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
 
-        child: Column(
-          mainAxisAlignment: .center,
+        child: Stack(
           children: [
-            _Cars()
-          ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children:  [
+                    FutureBuilder<List<CarsModel>>(
+                        future: carHttpService.getCars() ,
+                        builder: (context, snapshot) {
+                          if(snapshot.hasError){
+                            return const Center(
+                              child: Text("error"),
+                            );
+                          }
+
+                          if(snapshot.connectionState == ConnectionState.done){
+                            return ListCars(
+                              cars: snapshot.data!,
+                            );
+                          }else{
+                            return const CircularProgressIndicator();
+                          }
+                        }
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ]
         ),
       ),
     );
+  }
+}
+
+class ListCars extends StatelessWidget {
+  final List<CarsModel> cars;
+
+  const ListCars({Key? key,
+    required this.cars
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 56,
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const[
+              Text("All Cars",
+                style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+              Icon(Icons.filter_list_alt)
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+          width: 0,
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: cars.length,
+          itemBuilder: (context, item){
+            return ContainerCar(
+              car: cars[item],
+            );
+          },
+        )
+
+      ],
+    );
+
   }
 }
 
