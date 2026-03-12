@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'model/cars.dart';
-import 'services/service_cars.dart';
-import 'package:http/http.dart' as http;
+import 'pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,46 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Coches Api',
       theme: ThemeData(
 
         colorScheme: .fromSeed(seedColor: const Color.fromARGB(255, 240, 132, 59)),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomePage(title: 'Coches api '),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  
- @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-        title: Text(widget.title),
-      ),
-      body: Center(
-
-        child: Column(
-          mainAxisAlignment: .center,
-          children: [
-            const Text('prueba json:'),
-          ],
-        ),
-      ),
-    );
-  }
-}

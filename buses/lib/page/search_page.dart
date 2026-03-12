@@ -46,33 +46,65 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 161, 154), 
       appBar: AppBar(
+        backgroundColor: Colors.red,
         title: const Text('Buscar parada'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Código de parada',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => _search(),
+            Row(
+              children: [
+
+                /// TEXTFIELD
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      labelText: 'Código de parada',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onSubmitted: (_) => _search(),
+                  ),
+                ),
+
+                const SizedBox(width: 10),
+
+                /// BOTON BUSCAR
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 255, 113, 113),
+                    padding: const EdgeInsets.symmetric( // boton mas grande
+                      horizontal: 26,
+                      vertical: 22,
+                    ),
+                    shape: RoundedRectangleBorder( // bordes menos redondeados
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  onPressed: _loading ? null : _search,
+                  child: const Text('Buscar', 
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0), 
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ],
             ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: _loading ? null : _search,
-              child: const Text('Buscar'),
-            ),
+
             const SizedBox(height: 16),
-            if (_loading) const Center(child: CircularProgressIndicator()),
-            if (_error != null) ...[
-              Text(_error!, style: const TextStyle(color: Colors.red))
-            ],
+
+            if (_loading)
+              const Center(child: CircularProgressIndicator()),
+
+            if (_error != null)
+              Text(_error!, style: const TextStyle(color: Colors.red)),
+
             if (!_loading && _error == null)
               Expanded(
                 child: _results.isEmpty
@@ -81,11 +113,12 @@ class _SearchPageState extends State<SearchPage> {
                       )
                     : GridView.builder(
                         itemCount: _results.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
-                          childAspectRatio: 1.4,
+                          childAspectRatio: 5.2,
                         ),
                         itemBuilder: (context, index) {
                           final line = _results[index];
@@ -108,93 +141,96 @@ class _LineTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.black,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.all(8),
+        child: Row(
           children: [
 
-            /// BUS
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: line.transitNamespace == 'bus'
-                    ? Colors.blue
-                    : Colors.green,
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Text(
-                line.transitNamespace.toUpperCase(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            /// IMAGEN BUS
+            Image.asset(
+              "assets/images/bus_${line.transitNamespace}.png",
+              width: 200,
+              height: 200,
+              fit: BoxFit.contain,
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(width: 10),
 
-            /// IMAGEN + INFO
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            /// INFORMACIÓN
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-                /// COLUMNA IMAGEN
-                Image.asset(
-                  "assets/images/bus_${line.transitNamespace}.png",
-                  width: 140,
-                  height: 140,
-                  fit: BoxFit.contain,
-                ),
-
-                const SizedBox(width: 10),
-
-                /// COLUMNA INFORMACIÓN
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  /// LINEA + BADGE
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
 
-                      Text(
-                        '${line.nomLinia} → ${line.destiTrajecte}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                      /// LINEA (izquierda)
+                      Expanded(
+                        child: Text(
+                          '${line.nomLinia} → ${line.destiTrajecte}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
 
-                      const SizedBox(height: 6),
+                      const SizedBox(width: 8),
 
-                      if (line.propersBusos.isEmpty)
-                        const Text(
-                          "Sin buses próximos",
-                          style: TextStyle(color: Colors.orange),
-                        )
-                      else
-                        ...line.propersBusos.take(3).map((bus) {
-                          final min = bus.minutsRestants();
-                          final busInfo =
-                              bus.idBus != null ? 'Bus ${bus.idBus}' : 'Bus';
-
-                          return Text(
-                            "$busInfo: $min min",
-                            style: TextStyle(
-                              color: min <= 5 ? Colors.red : Colors.white,
-                              fontWeight: min <= 5
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
-                          );
-                        }).toList(),
+                      /// BADGE BUS (derecha)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: line.transitNamespace == 'bus'
+                              ? Colors.blue
+                              : Colors.green,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          line.transitNamespace.toUpperCase(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 4),
+
+                  /// TIEMPOS
+                  if (line.propersBusos.isEmpty)
+                    const Text(
+                      "Sin buses próximos",
+                      style: TextStyle(color: Colors.orange, fontSize: 12),
+                    )
+                  else
+                    ...line.propersBusos.take(2).map((bus) {
+                      final min = bus.minutsRestants();
+                      final busInfo =
+                          bus.idBus != null ? 'Bus ${bus.idBus}' : 'Bus';
+
+                      return Text(
+                        "$busInfo: $min min",
+                        style: TextStyle(
+                          color: min <= 5 ? Colors.red : const Color.fromARGB(255, 0, 0, 0),
+                          fontWeight:
+                              min <= 5 ? FontWeight.bold : FontWeight.normal,
+                          fontSize: 14,
+                        ),
+                      );
+                    }).toList(),
+                ],
+              ),
             ),
           ],
         ),

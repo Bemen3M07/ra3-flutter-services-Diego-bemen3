@@ -15,10 +15,10 @@ class CarHttpService {
   }
 
   Future<List<CarsModel>> getCars() async {
-    final uri = Uri.parse("$_serverUrl/cars");
+    final url = Uri.parse("$_serverUrl/cars");
 
     final response = await http.get(
-      uri,
+      url,
       headers: {
         "x-rapidapi-key": _headerKey,
         "x-rapidapi-host": _headerHost,
