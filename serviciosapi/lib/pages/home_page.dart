@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import '../model/cars.dart';
 import '../services/service_cars.dart';
-import 'package:http/http.dart' as http;
+import 'dart:math';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -81,19 +80,18 @@ class ListCars extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const[
-              Text("All Cars",
+              Text("Lista de coches disponibles",
                 style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
+                    fontSize: 24,
+                    color: Color.fromARGB(255, 0, 0, 0),
                     fontWeight: FontWeight.bold
                 ),
               ),
-              Icon(Icons.filter_list_alt)
             ],
           ),
         ),
         const SizedBox(
-          height: 10,
+          height: 7,
           width: 0,
         ),
         ListView.builder(
@@ -101,7 +99,7 @@ class ListCars extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: cars.length,
           itemBuilder: (context, item){
-            return ContainerCar(
+            return _Cars(
               car: cars[item],
             );
           },
@@ -114,6 +112,16 @@ class ListCars extends StatelessWidget {
 }
 
 class _Cars extends StatelessWidget {
+  final CarsModel car;
+  final Random random = Random();
+
+  _Cars({Key? key, required this.car}) : super(key: key);
+
+  final List<String> _carsImage = [
+    "assets/images/cocheAzul.png",
+    "assets/images/cocheBlanco.png",
+    "assets/images/cocheRojo.png",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +134,9 @@ class _Cars extends StatelessWidget {
         child: Row(
           children: [
 
-            /// IMAGEN BUS
+            /// IMAGEN COCHE
             Image.asset(
-              "assets/images/car.png",
+              _carsImage[random.nextInt(_carsImage.length)],
               width: 200,
               height: 200,
               fit: BoxFit.contain,
@@ -142,15 +150,13 @@ class _Cars extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  /// LINEA + BADGE
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
 
-                      /// LINEA (izquierda)
                       Expanded(
                         child: Text(
-                          'Coche nombre',
+                          '${car.year} ${car.make} ${car.model}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -158,19 +164,15 @@ class _Cars extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-
                       const SizedBox(width: 8),
-
                     ],
                   ),
 
                   const SizedBox(height: 4),
-
-                  /// TIEMPOS
         
-                  const Text(
-                    "precio",
-                    style: TextStyle(color: Colors.orange, fontSize: 12),
+                  Text(
+                    "Tipo de coche: ${car.type}",
+                    style: TextStyle(color: Colors.black, fontSize: 12),
                   )
                 ],
               ),
