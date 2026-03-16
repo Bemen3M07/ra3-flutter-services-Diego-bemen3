@@ -1,0 +1,35 @@
+name: coches
+description: "proyecto flutter para el uso de apis de coches"
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.4
+dependencies:
+  flutter:
+    sdk: flutter
+  faker: ^2.0.0
+  flutter_svg: ^2.0.17
+  camera: ^0.11.1
+  #camara_mac: ^0.0.9
+  audioplayers: ^6.1.2
+  cross_file: ^0.3.3
+  path_provider: ^2.0.11
+  http: ^1.3.0
+  
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+
+flutter:
+
+  uses-material-design: true
+  assets:
+  - assets/images/

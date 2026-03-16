@@ -1,5 +1,5 @@
 name: buses
-description: "A new Flutter project."
+description: "uso de api de tmb de seguimiento de buses"
 publish_to: 'none'
 version: 0.1.0
 

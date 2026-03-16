@@ -58,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
             Row(
               children: [
 
-                /// TEXTFIELD
+              
                 Expanded(
                   child: TextField(
                     controller: _controller,
@@ -77,11 +77,11 @@ class _SearchPageState extends State<SearchPage> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 113, 113),
-                    padding: const EdgeInsets.symmetric( // boton mas grande
+                    padding: const EdgeInsets.symmetric( 
                       horizontal: 26,
                       vertical: 22,
                     ),
-                    shape: RoundedRectangleBorder( // bordes menos redondeados
+                    shape: RoundedRectangleBorder( 
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -149,7 +149,7 @@ class _LineTile extends StatelessWidget {
         child: Row(
           children: [
 
-            /// IMAGEN BUS
+            // IMAGEN BUS
             Image.asset(
               "assets/images/bus_${line.transitNamespace}.png",
               width: 200,
@@ -159,18 +159,18 @@ class _LineTile extends StatelessWidget {
 
             const SizedBox(width: 10),
 
-            /// INFORMACIÓN
+            // INFORMACIÓN
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  /// LINEA + BADGE
+                  // LINEA 
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
 
-                      /// LINEA (izquierda)
+                      // LINEA (izquierda)
                       Expanded(
                         child: Text(
                           '${line.nomLinia} → ${line.destiTrajecte}',
@@ -184,7 +184,7 @@ class _LineTile extends StatelessWidget {
 
                       const SizedBox(width: 8),
 
-                      /// BADGE BUS (derecha)
+                      //  TIPO BUS (derecha)
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 8),
