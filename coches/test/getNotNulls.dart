@@ -12,7 +12,7 @@ void main() {
       // Comprobaciones 
       expect(cars, isNotEmpty);
       expect(cars.first.id, isNotNull);
-      expect(cars.first.make, isNotEmpty);
+      expect(cars.first.make, equals("Buick"));
 
     });
   });

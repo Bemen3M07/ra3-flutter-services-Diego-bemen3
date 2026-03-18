@@ -25,7 +25,7 @@ class LiniaTrajecte {
     return LiniaTrajecte(
       idOperador: json['id_operador'] as int? ?? 0,
       transitNamespace: json['transit_namespace'] as String? ?? '',
-      codiLinia: json['codi_linia'], // puede ser string o int
+      codiLinia: json['codi_linia'], 
       nomLinia: json['nom_linia'] as String? ?? '',
       idSentit: json['id_sentit'] as int? ?? 1,
       codiTrajecte: json['codi_trajecte'] as String? ?? '',

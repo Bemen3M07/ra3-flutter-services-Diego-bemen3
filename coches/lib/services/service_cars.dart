@@ -9,7 +9,7 @@ class CarHttpService {
 
   List<CarsModel> _carsModelFromJson(String str) {
     final List<dynamic> jsonData = json.decode(str);
-    return jsonData
+    return jsonData //builder para convertir la respuesta de la api json en una lista de objetos 
         .map((e) => CarsModel.fromMaptoCarObject(e))
         .toList();
   }
@@ -19,13 +19,13 @@ class CarHttpService {
 
     final response = await http.get(
       url,
-      headers: {
+      headers: { //headers para la autenticacion en la API
         "x-rapidapi-key": _headerKey,
         "x-rapidapi-host": _headerHost,
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200) { // si la conexion es exitosa devuelve la lista de coches
       return _carsModelFromJson(response.body);
     } else {
       throw Exception("Error ${response.statusCode}");

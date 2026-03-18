@@ -19,24 +19,24 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _search() async {
     final code = _controller.text.trim();
-    if (code.isEmpty) return;
+    if (code.isEmpty) return; 
 
-    setState(() {
+    setState(() { // estados por defecto al iniciar la busqueda
       _loading = true;
       _error = null;
       _results = [];
     });
 
     try {
-      final lines = await _service.fetchLiniesForParada(code);
-      setState(() {
+      final lines = await _service.fetchLiniesForParada(code); // consigue las lineas de la parada del servicio
+      setState(() { // una vez conseguidas las lineas cambia el estado para mostrarlas
         _results = lines;
       });
-    } catch (e) {
+    } catch (e) { // si hay un error al conseguir las lineas cambia el estado para mostrar el error
       setState(() {
         _error = e.toString();
       });
-    } finally {
+    } finally { // al finalizar la busqueda cambia el estado para ocultar el indicador de carga
       setState(() {
         _loading = false;
       });
@@ -57,17 +57,16 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             Row(
               children: [
-
               
                 Expanded(
-                  child: TextField(
+                  child: TextField( // campo de texto para introducir el codigo de la parada
                     controller: _controller,
                     decoration: const InputDecoration(
                       labelText: 'Código de parada',
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
-                    onSubmitted: (_) => _search(),
+                    onSubmitted: (_) => _search(), // llama a la variable para realizar la busqueda al enviar el formulario
                   ),
                 ),
 
@@ -85,7 +84,7 @@ class _SearchPageState extends State<SearchPage> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
-                  onPressed: _loading ? null : _search,
+                  onPressed: _loading ? null : _search, // llama a la variable para realizar la busqueda y si se esta cargando desactiva el boton mediante null
                   child: const Text('Buscar', 
                     style: TextStyle(
                       color: Color.fromARGB(255, 0, 0, 0), 
@@ -99,19 +98,19 @@ class _SearchPageState extends State<SearchPage> {
 
             const SizedBox(height: 16),
 
-            if (_loading)
+            if (_loading) // muestra un indicador de carga mientras se esta realizando la busqueda
               const Center(child: CircularProgressIndicator()),
 
-            if (_error != null)
+            if (_error != null) // si hay un error muestra el mensaje de error
               Text(_error!, style: const TextStyle(color: Colors.red)),
 
-            if (!_loading && _error == null)
+            if (!_loading && _error == null) // si no se esta cargando y no hay error muestra los resultados de la busqueda
               Expanded(
                 child: _results.isEmpty
                     ? const Center(
                         child: Text('Ingrese un código y presione buscar'),
                       )
-                    : GridView.builder(
+                    : GridView.builder( // muestra las lineas separadas en tarjetas de informacion de los buses en dos columnas
                         itemCount: _results.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -122,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         itemBuilder: (context, index) {
                           final line = _results[index];
-                          return _LineTile(line: line);
+                          return _LineTile(line: line); // widget para mostrar la informacion de cada linea en una tarjeta
                         },
                       ),
               ),
